@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {debounceTime} from 'rxjs/operators';
-import {WeatherService} from './weather.service';
+import {WeatherService} from './services/weather.service';
 import {WeatherModel} from './models/weather-model';
+import {TimeService} from './services/time.service';
+import {TimeModel} from './models/time.model';
 
 @Component({
   selector: 'app-root',
@@ -15,24 +17,37 @@ export class AppComponent implements OnInit {
     cityName: ''
   });
   weatherModel: WeatherModel | undefined;
+  timeModel: TimeModel | undefined;
 
-  constructor(private fb: FormBuilder, private weatherService: WeatherService) {
+  constructor(private fb: FormBuilder, private weatherService: WeatherService, private timeService: TimeService) {
   }
 
   ngOnInit(): void {
     this.searchForm.valueChanges.pipe(
       debounceTime(1000)
     ).subscribe(form => {
-      if (form.cityName.length < 3) {
+      if (form.cityName.trim().length < 3) {
         return;
       }
-      this.weatherService.getWeatherInformation(form.cityName).subscribe(
+      this.weatherService.getWeatherInformation(form.cityName.trim()).subscribe(
         data => {
           this.weatherModel = data;
-          console.log(this.weatherModel.name);
+          this.getCurrentTime();
         },
         error => alert(error.error.message)
       );
     });
+
+  }
+
+  getCurrentTime(): void {
+    if (!this.weatherModel) {
+      return;
+    }
+    this.timeService.getCurrentTime(this.weatherModel.coord.lat, this.weatherModel.coord.lon).subscribe(
+      response => {
+        this.timeModel = response;
+      }, error => console.log(error)
+    );
   }
 }

@@ -1,0 +1,17 @@
+{
+  "hosting": {
+    "site": "angular-weather-d6c49",
+    "public": "dist/weather-app",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

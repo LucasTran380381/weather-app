@@ -10,9 +10,11 @@
   <section class="info" *ngIf="weatherModel">
     <div class="info__city-name">{{weatherModel.name}}, {{weatherModel.sys.country}}</div>
 
+    <div *ngIf="timeModel" class="info__time">{{timeModel.time}}</div>
+
     <div class="info__temp">{{weatherModel.main.temp}} °C</div>
 
     <div class="info__description">{{weatherModel.weather[0].description}}</div>
-    
+
   </section>
 </div>

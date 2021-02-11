@@ -1,4 +1,8 @@
 export interface WeatherModel {
+  coord: {
+    lon: number,
+    lat: number
+  };
   name: string;
   main: {
     temp: number;
